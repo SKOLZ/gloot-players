@@ -4,39 +4,23 @@ import api from './apiConfig';
 
 // React-Query request keys
 const GET_PLAYERS_KEY = 'players';
-const GET_PLAYER_KEY = (playerId: number) => ['player', playerId];
 
 // API calls
 const getPlayers = () => api.get('/players');
-const createPlayer = () => api.post(`/player`);
-const getPlayer = (playerId: number) => api.get(`/players/${playerId}`);
-const editPlayer = (playerId: number) => api.put(`/players/${playerId}`);
+const addPlayer = (newPlayer: PlayerType) => api.post(`/player`, newPlayer);
+const editPlayer = (editedPlayer: PlayerType) => api.put(`/players/${editedPlayer.id}`, editedPlayer);
 const deletePlayer = (playerId: number) => api.delete(`/players/${playerId}`);
 
-export type playerType = {
+export type PlayerType = {
   id: string;
   name: string;
 };
 
-
 // React-Query custom hook calls 
+export const usePlayersData = () => useQuery(GET_PLAYERS_KEY, getPlayers);
 
-export const usePlayersData = () => {
-  return useQuery(GET_PLAYERS_KEY, getPlayers);
-}
+export const useAddPlayer = (onSuccess: () => void, onError: () => void) => useMutation(addPlayer, { onSuccess, onError });
 
-export const useCreatePlayer = () => {
-  return useMutation(createPlayer);  
-}
+export const useEditPlayer = () => useMutation(editPlayer);
 
-export const usePlayerData = (playerId: number) => {
-  return useQuery(GET_PLAYER_KEY(playerId), () => getPlayer(playerId));  
-}
-
-export const useEditPlayer = () => {
-  return useMutation(editPlayer);  
-}
-
-export const useDeletePlayer = () => {
-  return useMutation(deletePlayer);  
-}
+export const useDeletePlayer = (playerId: number) => useMutation(() => deletePlayer(playerId));  
