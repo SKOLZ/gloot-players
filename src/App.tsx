@@ -4,9 +4,11 @@ import Players from './screens/Players';
 
 function App() {
   return (
-    <Routes>
-      <Route path="/" element={<Players />} />
-    </Routes>
+    <main className="main">
+      <Routes>
+        <Route path="/" element={<Players />} />
+      </Routes>
+    </main>
   );
 };
 

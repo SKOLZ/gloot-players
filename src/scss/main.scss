@@ -1,5 +1,10 @@
 @import 'normalize.css';
 
-body {
+* {
+  box-sizing: border-box;
+}
+
+.main {
   background: black;
+  min-height: 100vh;
 }
