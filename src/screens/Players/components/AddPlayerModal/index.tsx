@@ -2,6 +2,7 @@ import { useState } from 'react';
 import Modal from 'react-modal';
 import { useForm } from 'react-hook-form';
 import { v4 as uuidv4 } from 'uuid';
+import toast from 'react-hot-toast';
 
 import { PlayerType, useAddPlayer } from '../../../../services/playersService';
 import styles from './styles.module.scss';
@@ -9,27 +10,25 @@ import { REQUIRED_ERROR_MSG, UNKNOWN_ERROR_MSG } from '../../../../constants/str
 
 type AddPlayerModalProps = {
   isOpen: boolean;
-  onCloseModal: () => void;
+  onCancel: () => void;
   onPlayerAdded: () => void;
 };
 
-function AddPlayerModal({ isOpen, onCloseModal, onPlayerAdded }: AddPlayerModalProps) {
-  Modal.setAppElement('#root');
+function AddPlayerModal({ isOpen, onCancel, onPlayerAdded }: AddPlayerModalProps) {
   const [generalError, setGeneralError] = useState("");
   const handleModalClose = () => {
     reset();
-    onCloseModal();
+    onCancel();
   }
 
-  const onSubmitSuccess = () => {
+  const onAddSuccess = () => {
     reset();
     onPlayerAdded();
   }
-  const onSubmitError = () => {
-    setGeneralError(UNKNOWN_ERROR_MSG);
-  }
 
-  const { mutate: addPlayer } = useAddPlayer(onSubmitSuccess, onSubmitError);
+  const onAddError = () => toast.error(UNKNOWN_ERROR_MSG);
+
+  const { mutate: addPlayer } = useAddPlayer(onAddSuccess, onAddError);
   
   const onSubmit = (newPlayer: PlayerType) => {
     setGeneralError('');
@@ -51,7 +50,7 @@ function AddPlayerModal({ isOpen, onCloseModal, onPlayerAdded }: AddPlayerModalP
   return (
     <Modal
       isOpen={isOpen}
-      onRequestClose={onCloseModal}
+      onRequestClose={onCancel}
       contentLabel="Add player modal"
       className={styles.modal}
       overlayClassName={styles.overlay}

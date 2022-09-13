@@ -1,28 +1,40 @@
-import { useState } from 'react';
+import { Dispatch, SetStateAction, useState } from 'react';
+import useToggle from '../../hooks/useToggle';
 
-import { PlayerType, usePlayersData } from '../../services/playersService';
+import { PlayerType, useDeletePlayer, usePlayersData } from '../../services/playersService';
 import AddPlayerModal from './components/AddPlayerModal';
+import PlayerDeletionModal from './components/PlayerDeletionModal';
 import PlayerRow from './components/PlayerRow';
 import styles from './styles.module.scss';
 
 function Players() {
   const { isLoading, data: response, refetch } = usePlayersData();
   
-  const [isOpenAddPlayerModal, setIsOpenAddPlayerModal] = useState(false);
-  const closeAddPlayerModal = () =>  setIsOpenAddPlayerModal(false);
+  const [isOpenAddPlayerModal, toggleAddPlayerModal] = useToggle();
+  const [isOpenDeletePlayerModal, toggleDeletePlayerModal] = useToggle();
+  
+  const [playerToDelete, setPlayerToDelete] = useState<PlayerType | null>(null);
+  
   const handlePlayerAdded = () => {
-    closeAddPlayerModal();
+    toggleAddPlayerModal();
     refetch();
   }
-  const handleDeletePlayer = () => {
-    console.log("delete");
+  
+  const handleDeletionConfirmed = () => {
+    toggleDeletePlayerModal();
+    refetch();
+  }
+
+  const handleDeletePlayer = (player: PlayerType) => {
+    setPlayerToDelete(player);
+    toggleDeletePlayerModal();
   }
 
   return (
     <>
       <div className={styles.sectionHeader}>
         <h1 className={styles.title}>players</h1>
-        <button onClick={() => setIsOpenAddPlayerModal(true)}>Add player</button>
+        <button onClick={toggleAddPlayerModal}>Add player</button>
       </div>
       <ul className={styles.playersList}>
         { 
@@ -39,9 +51,19 @@ function Players() {
       </ul>
       <AddPlayerModal
         isOpen={isOpenAddPlayerModal}
-        onCloseModal={closeAddPlayerModal}
+        onCancel={toggleAddPlayerModal}
         onPlayerAdded={handlePlayerAdded}
       />
+      {
+        playerToDelete && (
+          <PlayerDeletionModal
+            isOpen={isOpenDeletePlayerModal}
+            onCancel={toggleDeletePlayerModal}
+            onPlayerDeleted={handleDeletionConfirmed}
+            player={playerToDelete}
+          />
+        )
+      }
     </>
   );
 };

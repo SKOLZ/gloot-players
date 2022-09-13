@@ -9,7 +9,7 @@ const GET_PLAYERS_KEY = 'players';
 const getPlayers = () => api.get('/players');
 const addPlayer = (newPlayer: PlayerType) => api.post(`/player`, newPlayer);
 const editPlayer = (editedPlayer: PlayerType) => api.put(`/player/${editedPlayer.id}`, editedPlayer);
-const deletePlayer = (playerId: number) => api.delete(`/players/${playerId}`);
+const deletePlayer = (playerId: string) => api.delete(`/player/${playerId}`);
 
 export type PlayerType = {
   id: string;
@@ -23,4 +23,4 @@ export const useAddPlayer = (onSuccess: () => void, onError: () => void) => useM
 
 export const useEditPlayer = (onSuccess: () => void, onError: () => void) => useMutation(editPlayer, {onSuccess, onError});
 
-export const useDeletePlayer = (playerId: number) => useMutation(() => deletePlayer(playerId));  
+export const useDeletePlayer = (onSuccess: () => void, onError: () => void) => useMutation(deletePlayer, {onSuccess, onError});  
