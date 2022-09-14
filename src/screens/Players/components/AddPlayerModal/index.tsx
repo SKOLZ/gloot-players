@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import Modal from 'react-modal';
 import { useForm } from 'react-hook-form';
 import { v4 as uuidv4 } from 'uuid';
@@ -51,14 +50,14 @@ function AddPlayerModal({ isOpen, onCancel, onPlayerAdded }: AddPlayerModalProps
       isOpen={isOpen}
       onRequestClose={onCancel}
       contentLabel="Add player modal"
-      className={styles.modal}
-      overlayClassName={styles.overlay}
+      className="modal"
+      overlayClassName="overlay"
     >
-      <h2 className={styles.modalTitle}>Add Player</h2>
-      <button className={`button ${styles.modalClose}`} onClick={handleModalClose}>
-        <CloseIcon className={`icon-2 ${styles.closeIcon}`} />
+      <h2 className="modal-title">Add Player</h2>
+      <button className="button modal-close" onClick={handleModalClose}>
+        <CloseIcon className="icon-2 close-icon" />
       </button>
-      <form className={styles.modalForm} onSubmit={handleSubmit(onSubmit)}>
+      <form className="modal-body" onSubmit={handleSubmit(onSubmit)}>
         <div className={styles.formGroup}>
           <label className={styles.formLabel} htmlFor="name">Name</label>
           <input className={styles.formInput} {...register("name", { required: REQUIRED_ERROR_MSG })} id="name"/>
