@@ -20,22 +20,26 @@ export type PlayerType = {
 // React-Query custom hook calls 
 export const usePlayersData = () => useQuery(GET_PLAYERS_KEY, getPlayers);
 
+type UpdateFunctionType = ((oldPlayers: PlayerType[], player: PlayerType) => PlayerType[]);
+
+const updateListData = (onSuccess: () => void, queryClient: QueryClient, updateFunction: UpdateFunctionType) => (
+  (response: AxiosResponse<PlayerType>) => {
+    const oldData = queryClient.getQueryData<AxiosResponse<PlayerType[]>>(GET_PLAYERS_KEY);
+    if (oldData) {
+      const newPlayers = updateFunction(oldData.data, response.data)
+      queryClient.setQueryData(GET_PLAYERS_KEY, {
+        ...oldData,
+        data: newPlayers
+      });
+    }
+    onSuccess();
+  }
+);
+
 export const useAddPlayer = (onSuccess: () => void, onError: () => void) => {
   const queryClient = useQueryClient();
   return useMutation(addPlayer, {
-    onSuccess: (response) => {
-      const oldData = queryClient.getQueryData<AxiosResponse<PlayerType[]>>(GET_PLAYERS_KEY);
-      if (oldData) {
-        queryClient.setQueryData(GET_PLAYERS_KEY, {
-          ...oldData,
-          data: [
-            ...oldData.data,
-            response.data
-          ]
-        });
-      }
-      onSuccess();
-    },
+    onSuccess: updateListData(onSuccess, queryClient, (oldPlayers, addedPlayer) => [...oldPlayers, addedPlayer]),
     onError
   });
 }
@@ -43,23 +47,9 @@ export const useAddPlayer = (onSuccess: () => void, onError: () => void) => {
 export const useEditPlayer = (onSuccess: () => void, onError: () => void) => {
   const queryClient = useQueryClient();
   return useMutation(editPlayer, {
-    onSuccess: (response) => {
-      const oldData = queryClient.getQueryData<AxiosResponse<PlayerType[]>>(GET_PLAYERS_KEY);
-      if (oldData) {
-        const newPlayers = oldData.data.map(player => {
-          if (player.id === response.data.id) {
-            return response.data;
-          } else {
-            return player;
-          }
-        });
-        queryClient.setQueryData(GET_PLAYERS_KEY, {
-          ...oldData,
-          data: newPlayers
-        });
-      }
-      onSuccess();
-    },
+    onSuccess: updateListData(onSuccess, queryClient, (oldPlayers, editedPlayer) => {
+      return oldPlayers.map(player => (player.id === editedPlayer.id) ? editedPlayer : player);
+    }),
     onError
   });
 }
@@ -67,17 +57,9 @@ export const useEditPlayer = (onSuccess: () => void, onError: () => void) => {
 export const useDeletePlayer = (onSuccess: () => void, onError: () => void) => {
   const queryClient = useQueryClient();
   return useMutation(deletePlayer, {
-    onSuccess: (response) => {
-      const oldData = queryClient.getQueryData<AxiosResponse<PlayerType[]>>(GET_PLAYERS_KEY);
-      if (oldData) {
-        const newPlayers = oldData.data.filter(player => player.id !== response.data.id);
-        queryClient.setQueryData(GET_PLAYERS_KEY, {
-          ...oldData,
-          data: newPlayers
-        });
-      }
-      onSuccess();
-    },
+    onSuccess: updateListData(onSuccess, queryClient, (oldPlayers, deletedPlayer) => {
+      return oldPlayers.filter(player => player.id !== deletedPlayer.id);
+    }),
     onError
   });
 }
