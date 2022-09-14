@@ -16,6 +16,7 @@
   font-weight: 700;
   font-style: italic;
   text-transform: capitalize;
+  line-height: 3rem;
 }
 
 .edit-icon,
@@ -24,6 +25,43 @@
   width: 2.5rem;
 }
 
-.edit-icon {
-  margin-right: 10px;
+.player-actions {
+  line-height: 0;
+
+  > *:not(:last-child) {
+    margin-right: 10px;
+  }
+}
+
+.edit-form {
+  width: 100%;
+  display: flex;
+  align-items: center;
+}
+
+.cancel-icon,
+.confirm-icon {
+  height: 1.5rem;
+  width: 1.5rem;
+}
+
+.edit-input {
+  margin-right: 40px;
+  background: linear-gradient(to right, var(--primary-color-1), var(--primary-color-2));
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  font-size: 2.5rem;
+  font-weight: 700;
+  font-style: italic;
+  text-transform: capitalize;
+  caret-color: var(--tertiary-color);
+  stroke-opacity: 0.5;
+  position: relative;
+  border-bottom: 1px solid var(--tertiary-color);
+  height: 3rem;
+
+  &:focus-visible {
+    outline: 0;
+    border-bottom: 2px solid var(--tertiary-color);
+  }
 }
