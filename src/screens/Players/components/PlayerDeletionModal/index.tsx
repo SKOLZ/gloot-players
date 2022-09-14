@@ -5,6 +5,8 @@ import { PlayerType, useDeletePlayer } from '../../../../services/playersService
 import { UNKNOWN_ERROR_MSG } from '../../../../constants/strings';
 import { ReactComponent as CloseIcon } from '../../../../assets/close-icon.svg';
 import styles from './styles.module.scss';
+import Spinner from '../../../../components/Spinner';
+import useToggle from '../../../../hooks/useToggle';
 
 type PlayerDeletionModalProps = {
   player: PlayerType;
@@ -14,8 +16,17 @@ type PlayerDeletionModalProps = {
 };
 
 function PlayerDeletionModal({player, isOpen, onPlayerDeleted, onCancel}: PlayerDeletionModalProps) {
-  const onDeleteError = () => toast.error(UNKNOWN_ERROR_MSG);
-  const { mutate: deletePlayer } = useDeletePlayer(onPlayerDeleted, onDeleteError);
+  const onDeleteError = () => {
+    toast.error(UNKNOWN_ERROR_MSG);
+  };
+  const onDeleteSuccess = () => {
+    onPlayerDeleted();
+  };
+  const { mutate: deletePlayer, isLoading: isDeletingPlayer } = useDeletePlayer(onDeleteSuccess, onDeleteError);
+
+  const onDeletionConfirmed = () => {
+    deletePlayer(player.id);
+  };
 
   return (
     <Modal
@@ -33,7 +44,9 @@ function PlayerDeletionModal({player, isOpen, onPlayerDeleted, onCancel}: Player
         <p className={styles.modalText}>
           Are you sure you want to delete {player.name}?
         </p>
-        <button className="text-button" onClick={() => { deletePlayer(player.id) }}>Delete</button>
+        <button className="text-button" disabled={isDeletingPlayer} onClick={onDeletionConfirmed}>
+          { isDeletingPlayer ? <Spinner /> : "Delete" }
+        </button>
       </div>
     </Modal>
   )

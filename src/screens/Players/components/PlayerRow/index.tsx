@@ -10,6 +10,7 @@ import { ReactComponent as DeleteIcon } from '../../../../assets/delete-icon.svg
 import { ReactComponent as ConfirmIcon } from '../../../../assets/confirm-icon.svg';
 import { ReactComponent as CancelIcon } from '../../../../assets/cancel-icon.svg';
 import styles from './styles.module.scss';
+import Spinner from "../../../../components/Spinner";
 
 type PlayerRowProps = {
   player: PlayerType;
@@ -18,7 +19,7 @@ type PlayerRowProps = {
 };
 
 function PlayerRow({player, onDelete, onPlayerEdited}: PlayerRowProps) {
-  const [isEditing, toggleEditing] = useToggle();
+  const [editionMode, toggleEditionMode] = useToggle();
   const {
     register,
     handleSubmit,
@@ -27,14 +28,14 @@ function PlayerRow({player, onDelete, onPlayerEdited}: PlayerRowProps) {
   } = useForm<PlayerType>({ defaultValues: player });
   const cancelEdit = () => {
     reset(player);
-    toggleEditing();
+    toggleEditionMode();
   }
   const onEditSuccess = () => {
-    toggleEditing();
+    toggleEditionMode();
     onPlayerEdited();
   }
   const onEditFailed = () => toast.error(UNKNOWN_ERROR_MSG);
-  const { mutate: editPlayer } = useEditPlayer(onEditSuccess, onEditFailed);
+  const { mutate: editPlayer, isLoading: isEditingPlayer } = useEditPlayer(onEditSuccess, onEditFailed);
   const handleEditPlayerSubmit = (editedPlayer: PlayerType) => {
     editPlayer(editedPlayer);
   }
@@ -43,26 +44,27 @@ function PlayerRow({player, onDelete, onPlayerEdited}: PlayerRowProps) {
   return (
     <li key={player.id} className={styles.playerInfo}>
       {
-        isEditing ? (
+        editionMode ? (
           <form className={styles.editForm} onSubmit={handleSubmit(handleEditPlayerSubmit)}>
             <div className="form-group">
               <input className={styles.editInput} {...register("name", { required: REQUIRED_ERROR_MSG })} id="name"/>
               { errors.name && <p className="contact-error">{errors.name.message}</p> }
             </div>
             <span className={styles.playerActions}>
-              <button className="button" type="submit">
+              <button disabled={isEditingPlayer} className="button" type="submit">
                 <ConfirmIcon className={`icon-tertiary ${styles.confirmIcon}`} />
               </button>
-              <button className="button" type="button" onClick={cancelEdit}>
+              <button disabled={isEditingPlayer} className="button" type="button" onClick={cancelEdit}>
                 <CancelIcon className={`icon-tertiary ${styles.cancelIcon}`} />
               </button>
+              { isEditingPlayer && <Spinner /> }
             </span>
           </form>
         ) : (
           <>
             <p className={styles.playerName}>{player.name}</p>
             <span className={styles.playerActions}>
-              <button className="button" onClick={toggleEditing}>
+              <button className="button" onClick={toggleEditionMode}>
                 <EditIcon className={`icon-1 ${styles.editIcon}`} />
               </button>
               <button className="button" onClick={() => { onDelete(player) }}>

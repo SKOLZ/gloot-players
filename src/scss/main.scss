@@ -57,7 +57,11 @@ input {
 }
 
 .text-button {
-  line-height: 3em;
+  height: 3em;
+  text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   border-radius: 5px;
   background-image: linear-gradient(100deg, var(--primary-color-2), var(--primary-color-1));
   background-origin: border-box;
@@ -70,7 +74,8 @@ input {
   cursor: pointer;
   transition: all 1s ease;
 
-  &:hover {
+  &:hover,
+  &:disabled {
     scale: 1.01;
     box-shadow: 0 0 100px 0 var(--secondary-color) inset;
   }

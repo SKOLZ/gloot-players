@@ -7,6 +7,8 @@ import { PlayerType, useAddPlayer } from '../../../../services/playersService';
 import { REQUIRED_ERROR_MSG, UNKNOWN_ERROR_MSG } from '../../../../constants/strings';
 import { ReactComponent as CloseIcon } from '../../../../assets/close-icon.svg';
 import styles from './styles.module.scss';
+import useToggle from '../../../../hooks/useToggle';
+import Spinner from '../../../../components/Spinner';
 
 type AddPlayerModalProps = {
   isOpen: boolean;
@@ -25,9 +27,11 @@ function AddPlayerModal({ isOpen, onCancel, onPlayerAdded }: AddPlayerModalProps
     onPlayerAdded();
   }
 
-  const onAddError = () => toast.error(UNKNOWN_ERROR_MSG);
+  const onAddError = () => {
+    toast.error(UNKNOWN_ERROR_MSG);
+  }
 
-  const { mutate: addPlayer } = useAddPlayer(onAddSuccess, onAddError);
+  const { mutate: addPlayer, isLoading: isAddingPlayer } = useAddPlayer(onAddSuccess, onAddError);
   
   const onSubmit = (newPlayer: PlayerType) => {
     const newPlayerWithId = {
@@ -63,7 +67,9 @@ function AddPlayerModal({ isOpen, onCancel, onPlayerAdded }: AddPlayerModalProps
           <input className={styles.formInput} {...register("name", { required: REQUIRED_ERROR_MSG })} id="name"/>
           { errors.name && <p className="contact-error">{errors.name.message}</p> }
         </div>
-        <button className="text-button" type="submit">Add player</button>
+        <button className="text-button" type="submit" disabled={isAddingPlayer}>
+          { isAddingPlayer ? <Spinner /> : "Add player" }
+        </button>
       </form>
     </Modal>
   )

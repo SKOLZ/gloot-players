@@ -1,4 +1,5 @@
-import { useMutation, useQuery } from 'react-query';
+import { Axios, AxiosResponse } from 'axios';
+import { QueryClient, useMutation, useQuery, useQueryClient } from 'react-query';
 
 import api from './apiConfig';
 
@@ -19,8 +20,64 @@ export type PlayerType = {
 // React-Query custom hook calls 
 export const usePlayersData = () => useQuery(GET_PLAYERS_KEY, getPlayers);
 
-export const useAddPlayer = (onSuccess: () => void, onError: () => void) => useMutation(addPlayer, { onSuccess, onError });
+export const useAddPlayer = (onSuccess: () => void, onError: () => void) => {
+  const queryClient = useQueryClient();
+  return useMutation(addPlayer, {
+    onSuccess: (response) => {
+      const oldData = queryClient.getQueryData<AxiosResponse<PlayerType[]>>(GET_PLAYERS_KEY);
+      if (oldData) {
+        queryClient.setQueryData(GET_PLAYERS_KEY, {
+          ...oldData,
+          data: [
+            ...oldData.data,
+            response.data
+          ]
+        });
+      }
+      onSuccess();
+    },
+    onError
+  });
+}
 
-export const useEditPlayer = (onSuccess: () => void, onError: () => void) => useMutation(editPlayer, {onSuccess, onError});
+export const useEditPlayer = (onSuccess: () => void, onError: () => void) => {
+  const queryClient = useQueryClient();
+  return useMutation(editPlayer, {
+    onSuccess: (response) => {
+      const oldData = queryClient.getQueryData<AxiosResponse<PlayerType[]>>(GET_PLAYERS_KEY);
+      if (oldData) {
+        const newPlayers = oldData.data.map(player => {
+          if (player.id === response.data.id) {
+            return response.data;
+          } else {
+            return player;
+          }
+        });
+        queryClient.setQueryData(GET_PLAYERS_KEY, {
+          ...oldData,
+          data: newPlayers
+        });
+      }
+      onSuccess();
+    },
+    onError
+  });
+}
 
-export const useDeletePlayer = (onSuccess: () => void, onError: () => void) => useMutation(deletePlayer, {onSuccess, onError});  
+export const useDeletePlayer = (onSuccess: () => void, onError: () => void) => {
+  const queryClient = useQueryClient();
+  return useMutation(deletePlayer, {
+    onSuccess: (response) => {
+      const oldData = queryClient.getQueryData<AxiosResponse<PlayerType[]>>(GET_PLAYERS_KEY);
+      if (oldData) {
+        const newPlayers = oldData.data.filter(player => player.id !== response.data.id);
+        queryClient.setQueryData(GET_PLAYERS_KEY, {
+          ...oldData,
+          data: newPlayers
+        });
+      }
+      onSuccess();
+    },
+    onError
+  });
+}

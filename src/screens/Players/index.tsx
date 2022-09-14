@@ -7,6 +7,7 @@ import AddPlayerModal from './components/AddPlayerModal';
 import PlayerDeletionModal from './components/PlayerDeletionModal';
 import PlayerRow from './components/PlayerRow';
 import styles from './styles.module.scss';
+import Spinner from '../../components/Spinner';
 
 function Players() {
   const { isLoading, data: response, refetch } = usePlayersData();
@@ -15,17 +16,6 @@ function Players() {
   const [isOpenDeletePlayerModal, toggleDeletePlayerModal] = useToggle();
   
   const [playerToDelete, setPlayerToDelete] = useState<PlayerType | null>(null);
-  
-  const handlePlayerAdded = () => {
-    toggleAddPlayerModal();
-    refetch();
-  }
-  
-  const handleDeletionConfirmed = () => {
-    toggleDeletePlayerModal();
-    refetch();
-  }
-
   const handleDeletePlayer = (player: PlayerType) => {
     setPlayerToDelete(player);
     toggleDeletePlayerModal();
@@ -41,7 +31,7 @@ function Players() {
       </div>
       <ul className={styles.playersList}>
         { 
-          isLoading ? <h2>Loading...</h2> :
+          isLoading ? <Spinner className={styles.listSpinner} /> :
           response?.data.map((player: PlayerType) => (
             <PlayerRow
               key={player.id}
@@ -55,14 +45,14 @@ function Players() {
       <AddPlayerModal
         isOpen={isOpenAddPlayerModal}
         onCancel={toggleAddPlayerModal}
-        onPlayerAdded={handlePlayerAdded}
+        onPlayerAdded={toggleAddPlayerModal}
       />
       {
         playerToDelete && (
           <PlayerDeletionModal
             isOpen={isOpenDeletePlayerModal}
             onCancel={toggleDeletePlayerModal}
-            onPlayerDeleted={handleDeletionConfirmed}
+            onPlayerDeleted={toggleDeletePlayerModal}
             player={playerToDelete}
           />
         )

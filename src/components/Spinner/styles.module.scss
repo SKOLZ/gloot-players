@@ -1,0 +1,32 @@
+.spinner {
+  width: 60px;
+  display: flex;
+  justify-content: space-around;
+}
+
+.spinner > * {
+  width: 14px;
+  height: 14px;
+  border-radius: 100%;
+  display: inline-block;
+  animation: sk-bouncedelay 1.4s infinite ease-in-out both;
+}
+
+.bounce1 {
+  animation-delay: -0.32s;
+}
+
+.bounce2 {
+  animation-delay: -0.16s;
+  background-color: var(--primary-color-2);
+}
+
+.bounce1,
+.bounce3 {
+  background-color: var(--primary-color-1);
+}
+
+@keyframes sk-bouncedelay {
+  0%, 80%, 100% { transform: scale(0); }
+  40% { transform: scale(1); }
+}
