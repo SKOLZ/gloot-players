@@ -1,7 +1,8 @@
-import { Dispatch, SetStateAction, useState } from 'react';
-import useToggle from '../../hooks/useToggle';
+import { useState } from 'react';
 
-import { PlayerType, useDeletePlayer, usePlayersData } from '../../services/playersService';
+import useToggle from '../../hooks/useToggle';
+import { PlayerType, usePlayersData } from '../../services/playersService';
+import { ReactComponent as AddIcon } from '../../assets/add-icon.svg';
 import AddPlayerModal from './components/AddPlayerModal';
 import PlayerDeletionModal from './components/PlayerDeletionModal';
 import PlayerRow from './components/PlayerRow';
@@ -31,10 +32,12 @@ function Players() {
   }
 
   return (
-    <>
+    <main className={styles.main}>
       <div className={styles.sectionHeader}>
         <h1 className={styles.title}>players</h1>
-        <button onClick={toggleAddPlayerModal}>Add player</button>
+        <button className="button" onClick={toggleAddPlayerModal}>
+          <AddIcon className={`icon-2 ${styles.addIcon}`} />
+        </button>
       </div>
       <ul className={styles.playersList}>
         { 
@@ -64,7 +67,7 @@ function Players() {
           />
         )
       }
-    </>
+    </main>
   );
 };
 

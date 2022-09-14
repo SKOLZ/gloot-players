@@ -5,8 +5,9 @@ import { v4 as uuidv4 } from 'uuid';
 import toast from 'react-hot-toast';
 
 import { PlayerType, useAddPlayer } from '../../../../services/playersService';
-import styles from './styles.module.scss';
 import { REQUIRED_ERROR_MSG, UNKNOWN_ERROR_MSG } from '../../../../constants/strings';
+import { ReactComponent as CloseIcon } from '../../../../assets/close-icon.svg';
+import styles from './styles.module.scss';
 
 type AddPlayerModalProps = {
   isOpen: boolean;
@@ -15,7 +16,6 @@ type AddPlayerModalProps = {
 };
 
 function AddPlayerModal({ isOpen, onCancel, onPlayerAdded }: AddPlayerModalProps) {
-  const [generalError, setGeneralError] = useState("");
   const handleModalClose = () => {
     reset();
     onCancel();
@@ -31,7 +31,6 @@ function AddPlayerModal({ isOpen, onCancel, onPlayerAdded }: AddPlayerModalProps
   const { mutate: addPlayer } = useAddPlayer(onAddSuccess, onAddError);
   
   const onSubmit = (newPlayer: PlayerType) => {
-    setGeneralError('');
     const newPlayerWithId = {
       ...newPlayer,
       id: uuidv4()
@@ -56,17 +55,16 @@ function AddPlayerModal({ isOpen, onCancel, onPlayerAdded }: AddPlayerModalProps
       overlayClassName={styles.overlay}
     >
       <h2 className={styles.modalTitle}>Add Player</h2>
-      <button className={styles.modalClose} onClick={handleModalClose}>close</button>
-      <form onSubmit={handleSubmit(onSubmit)}>
-        <div className="form-group">
-          <label htmlFor="name">Name</label>
-          <input {...register("name", { required: REQUIRED_ERROR_MSG })} id="name"/>
+      <button className={`button ${styles.modalClose}`} onClick={handleModalClose}>
+        <CloseIcon className={`icon-2 ${styles.closeIcon}`} />
+      </button>
+      <form className={styles.modalForm} onSubmit={handleSubmit(onSubmit)}>
+        <div className={styles.formGroup}>
+          <label className={styles.formLabel} htmlFor="name">Name</label>
+          <input className={styles.formInput} {...register("name", { required: REQUIRED_ERROR_MSG })} id="name"/>
           { errors.name && <p className="contact-error">{errors.name.message}</p> }
         </div>
-        <div className="form-group">
-          <button type="submit">Add player</button>
-          <p>{ generalError }</p>
-        </div>
+        <button className="text-button" type="submit">Add player</button>
       </form>
     </Modal>
   )

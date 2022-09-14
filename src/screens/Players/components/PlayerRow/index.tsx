@@ -4,8 +4,10 @@ import toast from 'react-hot-toast';
 
 import { PlayerType, useEditPlayer } from "../../../../services/playersService";
 import { REQUIRED_ERROR_MSG, UNKNOWN_ERROR_MSG } from "../../../../constants/strings";
-import styles from './styles.module.scss';
 import useToggle from "../../../../hooks/useToggle";
+import { ReactComponent as EditIcon } from '../../../../assets/edit-icon.svg';
+import { ReactComponent as DeleteIcon } from '../../../../assets/delete-icon.svg';
+import styles from './styles.module.scss';
 
 type PlayerRowProps = {
   player: PlayerType;
@@ -52,8 +54,12 @@ function PlayerRow({player, onDelete, onPlayerEdited}: PlayerRowProps) {
           <>
             <p className={styles.playerName}>{player.name}</p>
             <span className={styles.playerActions}>
-              <button onClick={toggleEditing}>Edit Player</button>
-              <button onClick={() => { onDelete(player) }}>Delete Player</button>
+              <button className="button" onClick={toggleEditing}>
+                <EditIcon className={`icon-1 ${styles.editIcon}`} />
+              </button>
+              <button className="button" onClick={() => { onDelete(player) }}>
+                <DeleteIcon className={`icon-1 ${styles.deleteIcon}`} />
+              </button>
             </span>
           </>
         )

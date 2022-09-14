@@ -7,12 +7,12 @@ import Players from './screens/Players';
 function App() {
   Modal.setAppElement('#root');
   return (
-    <main className="main">
+    <>
       <Toaster position="top-right" />
       <Routes>
         <Route path="/" element={<Players />} />
       </Routes>
-    </main>
+    </>
   );
 };
 
