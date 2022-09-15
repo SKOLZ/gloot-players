@@ -3,8 +3,8 @@ import { useForm } from 'react-hook-form';
 import { v4 as uuidv4 } from 'uuid';
 import toast from 'react-hot-toast';
 
-import { PlayerType, useAddPlayer } from '../../../../services/playersService';
-import { REQUIRED_ERROR_MSG, UNKNOWN_ERROR_MSG } from '../../../../constants/strings';
+import { NAME_MAX_LENGTH, PlayerType, useAddPlayer } from '../../../../services/playersService';
+import { MAX_LENGTH_ERROR_MSG, REQUIRED_ERROR_MSG, UNKNOWN_ERROR_MSG } from '../../../../constants/strings';
 import { ReactComponent as CloseIcon } from '../../../../assets/close-icon.svg';
 import styles from './styles.module.scss';
 import useToggle from '../../../../hooks/useToggle';
@@ -62,10 +62,24 @@ function AddPlayerModal({ isOpen, onCancel, onPlayerAdded }: AddPlayerModalProps
         <CloseIcon className="icon-2 close-icon" />
       </button>
       <form className="modal-body" onSubmit={handleSubmit(onSubmit)}>
-        <div className={styles.formGroup}>
+        <div className="form-group">
           <label className={styles.formLabel} htmlFor="name">Name</label>
-          <input className={styles.formInput} {...register("name", { required: REQUIRED_ERROR_MSG })} id="name"/>
-          { errors.name && <p className="contact-error">{errors.name.message}</p> }
+          <input
+            autoFocus
+            className={styles.formInput}
+            {
+              ...register(
+                "name",
+                {
+                  required: REQUIRED_ERROR_MSG,
+                  maxLength: {value: NAME_MAX_LENGTH, message: MAX_LENGTH_ERROR_MSG(NAME_MAX_LENGTH) }
+                }
+              )
+            }
+            id="name"
+          />
+          { errors.name?.type === 'required' && <p className="form-error">{errors.name.message}</p> }
+          { errors.name?.type === 'maxLength' && <p className="form-error">{errors.name.message}</p> }
         </div>
         <button className="text-button" type="submit" disabled={isAddingPlayer}>
           { isAddingPlayer ? <Spinner /> : "Add player" }

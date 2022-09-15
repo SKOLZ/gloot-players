@@ -17,6 +17,8 @@ export type PlayerType = {
   name: string;
 };
 
+export const NAME_MAX_LENGTH = 40;
+
 // React-Query custom hook calls 
 export const usePlayersData = () => useQuery(GET_PLAYERS_KEY, getPlayers);
 

@@ -26,6 +26,13 @@
   height: 5rem; 
 }
 
-.list-spinner {
-  margin: 100px auto 0
+.list-spinner,
+.list-error {
+  margin: 100px auto 0;
+}
+
+.list-error {
+  text-align: center;
+  font-size: 30px;
+  color: var(--error-color);
 }

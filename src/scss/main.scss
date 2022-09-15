@@ -27,6 +27,7 @@ input {
   --secondary-color: #262626;
   --secondary-darker-color: #202020;
   --tertiary-color: #FAFAFA;
+  --error-color: #FF4A4A;
 }
 
 .button {
@@ -131,4 +132,21 @@ input {
   flex-direction: column;
   max-width: 350px;
   width: 100%;
+
+  .form-group {
+    margin-bottom: 40px;
+  }
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  position: relative;
+
+  .form-error {
+    position: absolute;
+    top: calc(100% + 5px);
+    left: 5px;
+    color: var(--error-color);
+  }
 }

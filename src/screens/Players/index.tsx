@@ -8,9 +8,10 @@ import PlayerDeletionModal from './components/PlayerDeletionModal';
 import PlayerRow from './components/PlayerRow';
 import styles from './styles.module.scss';
 import Spinner from '../../components/Spinner';
+import { PLAYER_LIST_ERROR_MSG } from '../../constants/strings';
 
 function Players() {
-  const { isLoading, data: response, refetch } = usePlayersData();
+  const { isLoading, data: response, isLoadingError } = usePlayersData();
   
   const [isOpenAddPlayerModal, toggleAddPlayerModal] = useToggle();
   const [isOpenDeletePlayerModal, toggleDeletePlayerModal] = useToggle();
@@ -37,9 +38,11 @@ function Players() {
               key={player.id}
               player={player}
               onDelete={handleDeletePlayer}
-              onPlayerEdited={() => refetch()}
             />
           ))
+        }
+        {
+          isLoadingError && <p className={styles.listError}>{ PLAYER_LIST_ERROR_MSG }</p>
         }
       </ul>
       <AddPlayerModal

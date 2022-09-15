@@ -2,8 +2,8 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import toast from 'react-hot-toast';
 
-import { PlayerType, useEditPlayer } from "../../../../services/playersService";
-import { REQUIRED_ERROR_MSG, UNKNOWN_ERROR_MSG } from "../../../../constants/strings";
+import { NAME_MAX_LENGTH, PlayerType, useEditPlayer } from "../../../../services/playersService";
+import { MAX_LENGTH_ERROR_MSG, REQUIRED_ERROR_MSG, UNKNOWN_ERROR_MSG } from "../../../../constants/strings";
 import useToggle from "../../../../hooks/useToggle";
 import { ReactComponent as EditIcon } from '../../../../assets/edit-icon.svg';
 import { ReactComponent as DeleteIcon } from '../../../../assets/delete-icon.svg';
@@ -15,10 +15,9 @@ import Spinner from "../../../../components/Spinner";
 type PlayerRowProps = {
   player: PlayerType;
   onDelete: (player: PlayerType) => void;
-  onPlayerEdited: () => void;
 };
 
-function PlayerRow({player, onDelete, onPlayerEdited}: PlayerRowProps) {
+function PlayerRow({player, onDelete }: PlayerRowProps) {
   const [editionMode, toggleEditionMode] = useToggle();
   const {
     register,
@@ -30,12 +29,8 @@ function PlayerRow({player, onDelete, onPlayerEdited}: PlayerRowProps) {
     reset(player);
     toggleEditionMode();
   }
-  const onEditSuccess = () => {
-    toggleEditionMode();
-    onPlayerEdited();
-  }
   const onEditFailed = () => toast.error(UNKNOWN_ERROR_MSG);
-  const { mutate: editPlayer, isLoading: isEditingPlayer } = useEditPlayer(onEditSuccess, onEditFailed);
+  const { mutate: editPlayer, isLoading: isEditingPlayer } = useEditPlayer(toggleEditionMode, onEditFailed);
   const handleEditPlayerSubmit = (editedPlayer: PlayerType) => {
     editPlayer(editedPlayer);
   }
@@ -46,9 +41,22 @@ function PlayerRow({player, onDelete, onPlayerEdited}: PlayerRowProps) {
       {
         editionMode ? (
           <form className={styles.editForm} onSubmit={handleSubmit(handleEditPlayerSubmit)}>
-            <div className="form-group">
-              <input className={styles.editInput} {...register("name", { required: REQUIRED_ERROR_MSG })} id="name"/>
-              { errors.name && <p className="contact-error">{errors.name.message}</p> }
+            <div className={`form-group ${styles.editInputWrapper}`}>
+              <input 
+                className={styles.editInput}
+                autoFocus
+                {
+                  ...register(
+                    "name",
+                    {
+                      required: REQUIRED_ERROR_MSG,
+                      maxLength: { value: NAME_MAX_LENGTH, message: MAX_LENGTH_ERROR_MSG(NAME_MAX_LENGTH) }
+                    }
+                  )
+                }
+                id="name"
+              />
+              { errors.name && <p className="form-error">{errors.name.message}</p> }
             </div>
             <span className={styles.playerActions}>
               <button disabled={isEditingPlayer} className="button" type="submit">
