@@ -4,11 +4,11 @@ import toast from 'react-hot-toast';
 import { NAME_MAX_LENGTH, PlayerType, useEditPlayer } from "../../../../services/playersService";
 import { MAX_LENGTH_ERROR_MSG, REQUIRED_ERROR_MSG, UNKNOWN_ERROR_MSG } from "../../../../constants/strings";
 import useToggle from "../../../../hooks/useToggle";
+import Spinner from "../../../../components/Spinner";
 import { ReactComponent as EditIcon } from '../../../../assets/edit-icon.svg';
 import { ReactComponent as DeleteIcon } from '../../../../assets/delete-icon.svg';
 import { ReactComponent as ConfirmIcon } from '../../../../assets/confirm-icon.svg';
 import { ReactComponent as CancelIcon } from '../../../../assets/cancel-icon.svg';
-import Spinner from "../../../../components/Spinner";
 import styles from './styles.module.scss';
 
 type PlayerRowProps = {

@@ -96,3 +96,15 @@ input {
     color: var(--error-color);
   }
 }
+
+@media screen and (max-width: 768px) {
+  html {
+    font-size: 12px;
+  }
+}
+
+@media screen and (max-width: 500px) {
+  html {
+    font-size: 10px;
+  }
+}

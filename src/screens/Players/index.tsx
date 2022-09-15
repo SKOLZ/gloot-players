@@ -26,7 +26,7 @@ function Players() {
     <main className={styles.main}>
       <div className={styles.sectionHeader}>
         <h1 className={styles.title}>players</h1>
-        <button className="button" onClick={toggleAddPlayerModal}>
+        <button className={`${styles.addButton} button`} onClick={toggleAddPlayerModal}>
           <AddIcon className={`icon-2 ${styles.addIcon}`} />
         </button>
       </div>
