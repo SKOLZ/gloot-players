@@ -6,7 +6,6 @@ import { UNKNOWN_ERROR_MSG } from '../../../../constants/strings';
 import { ReactComponent as CloseIcon } from '../../../../assets/close-icon.svg';
 import styles from './styles.module.scss';
 import Spinner from '../../../../components/Spinner';
-import useToggle from '../../../../hooks/useToggle';
 
 type PlayerDeletionModalProps = {
   player: PlayerType;
@@ -19,10 +18,7 @@ function PlayerDeletionModal({player, isOpen, onPlayerDeleted, onCancel}: Player
   const onDeleteError = () => {
     toast.error(UNKNOWN_ERROR_MSG);
   };
-  const onDeleteSuccess = () => {
-    onPlayerDeleted();
-  };
-  const { mutate: deletePlayer, isLoading: isDeletingPlayer } = useDeletePlayer(onDeleteSuccess, onDeleteError);
+  const { mutate: deletePlayer, isLoading: isDeletingPlayer } = useDeletePlayer(onPlayerDeleted, onDeleteError);
 
   const onDeletionConfirmed = () => {
     deletePlayer(player.id);
@@ -30,6 +26,7 @@ function PlayerDeletionModal({player, isOpen, onPlayerDeleted, onCancel}: Player
 
   return (
     <Modal
+      closeTimeoutMS={1000}
       isOpen={isOpen}
       onRequestClose={onCancel}
       contentLabel="Delete player confirmation modal"

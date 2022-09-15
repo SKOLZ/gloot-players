@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { useForm } from "react-hook-form";
 import toast from 'react-hot-toast';
 
@@ -9,15 +8,16 @@ import { ReactComponent as EditIcon } from '../../../../assets/edit-icon.svg';
 import { ReactComponent as DeleteIcon } from '../../../../assets/delete-icon.svg';
 import { ReactComponent as ConfirmIcon } from '../../../../assets/confirm-icon.svg';
 import { ReactComponent as CancelIcon } from '../../../../assets/cancel-icon.svg';
-import styles from './styles.module.scss';
 import Spinner from "../../../../components/Spinner";
+import styles from './styles.module.scss';
 
 type PlayerRowProps = {
   player: PlayerType;
   onDelete: (player: PlayerType) => void;
+  animationDelay: number;
 };
 
-function PlayerRow({player, onDelete }: PlayerRowProps) {
+function PlayerRow({player, onDelete, animationDelay }: PlayerRowProps) {
   const [editionMode, toggleEditionMode] = useToggle();
   const {
     register,
@@ -34,10 +34,15 @@ function PlayerRow({player, onDelete }: PlayerRowProps) {
   const handleEditPlayerSubmit = (editedPlayer: PlayerType) => {
     editPlayer(editedPlayer);
   }
-
+  const MAX_ANIMATION_DELAY = 2;
 
   return (
-    <li key={player.id} className={styles.playerInfo}>
+    <li
+      className={styles.playerInfo}
+      style={{
+        animationDelay: `${animationDelay < MAX_ANIMATION_DELAY ? animationDelay : MAX_ANIMATION_DELAY}s`
+      }}
+    >
       {
         editionMode ? (
           <form className={styles.editForm} onSubmit={handleSubmit(handleEditPlayerSubmit)}>

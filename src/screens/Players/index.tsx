@@ -33,11 +33,12 @@ function Players() {
       <ul className={styles.playersList}>
         { 
           isLoading ? <Spinner className={styles.listSpinner} /> :
-          response?.data.map((player: PlayerType) => (
+          response?.data.map((player: PlayerType, index: number) => (
             <PlayerRow
               key={player.id}
               player={player}
               onDelete={handleDeletePlayer}
+              animationDelay={0.2 + index * 0.2}
             />
           ))
         }

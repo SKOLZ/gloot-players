@@ -8,7 +8,20 @@
   display: flex;
   justify-content: space-between;
   padding: 20px 10px;
-  border-bottom: 2px solid var(--primary-color-2);
+  position: relative;
+
+  &::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    height: 2px;
+    width: 100%;
+    background-color: var(--primary-color-2);
+    animation-duration: 0.5s;
+    animation-fill-mode: forwards;
+    :global { animation-name: fadeIn; }
+  }
 }
 
 .title {
@@ -19,11 +32,15 @@
   font-weight: 700;
   font-style: italic;
   text-transform: uppercase;
+  animation-duration: 0.5s;
+  :global { animation-name: fadeInDown; }
 }
 
 .add-icon {
   width: 5rem;
-  height: 5rem; 
+  height: 5rem;
+  animation-duration: 0.5s;
+  :global { animation-name: fadeInDown; };
 }
 
 .list-spinner,
