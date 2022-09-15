@@ -1,0 +1,39 @@
+.button {
+  line-height: 0;
+  background-color: transparent;
+  cursor: pointer;
+  transition: all ease 0.5s;
+
+  &:hover {
+    scale: 1.1;
+  }
+
+  &:active {
+    filter: brightness(0.85);
+  }
+}
+
+.text-button {
+  height: 3em;
+  text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 5px;
+  background-image: linear-gradient(100deg, var(--primary-color-2), var(--primary-color-1));
+  background-origin: border-box;
+  box-shadow: 0 0 100px 1.5rem var(--secondary-color) inset;
+  border: solid 3px transparent;
+  color: var(--tertiary-color);
+  font-weight: bold;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all 1s ease;
+
+  &:hover,
+  &:disabled {
+    scale: 1.01;
+    box-shadow: 0 0 100px 0 var(--secondary-color) inset;
+  }
+}

@@ -1,7 +1,11 @@
 @import 'normalize.css';
 @import 'animate.css';
-@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,400;1,700&display=swap');
+
+@import './fonts';
+@import './texts';
+@import './buttons';
 @import './modals';
+@import './forms';
 
 * {
   box-sizing: border-box;
@@ -30,71 +34,6 @@ input {
   --secondary-darker-color: #202020;
   --tertiary-color: #FAFAFA;
   --error-color: #FF4A4A;
-}
-
-.button {
-  line-height: 0;
-  background-color: transparent;
-  cursor: pointer;
-  transition: all ease 0.5s;
-
-  &:hover {
-    scale: 1.1;
-  }
-  
-  &:active {
-    filter: brightness(0.85);
-  }
-
-  .icon-1 {
-    fill: var(--primary-color-1);
-  }
-
-  .icon-2 {
-    fill: var(--primary-color-2);
-  }
-
-  .icon-tertiary {
-    fill: var(--tertiary-color);
-  }
-}
-
-.text-button {
-  height: 3em;
-  text-align: center;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  border-radius: 5px;
-  background-image: linear-gradient(100deg, var(--primary-color-2), var(--primary-color-1));
-  background-origin: border-box;
-  box-shadow: 0 0 100px 1.5rem var(--secondary-color) inset;
-  border: solid 3px transparent;
-  color: var(--tertiary-color);
-  font-weight: bold;
-  letter-spacing: 1px;
-  text-transform: uppercase;
-  cursor: pointer;
-  transition: all 1s ease;
-
-  &:hover,
-  &:disabled {
-    scale: 1.01;
-    box-shadow: 0 0 100px 0 var(--secondary-color) inset;
-  }
-}
-
-.form-group {
-  display: flex;
-  flex-direction: column;
-  position: relative;
-
-  .form-error {
-    position: absolute;
-    top: calc(100% + 5px);
-    left: 5px;
-    color: var(--error-color);
-  }
 }
 
 @media screen and (max-width: 768px) {

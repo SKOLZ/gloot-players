@@ -1,0 +1,26 @@
+.form-group {
+  display: flex;
+  flex-direction: column;
+  position: relative;
+
+  .form-error {
+    position: absolute;
+    top: calc(100% + 5px);
+    left: 5px;
+    color: var(--error-color);
+  }
+}
+
+.form-label {
+  color: var(--tertiary-color);
+  font-size: 1.2rem;
+  padding-left: 0.4rem;
+  margin-bottom: 0.5rem;
+}
+
+.form-input {
+  line-height: 2.5em;
+  border-radius: 5px;
+  background: var(--tertiary-color);
+  padding: 0 0.5rem;
+}

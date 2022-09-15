@@ -1,4 +1,4 @@
-import { Axios, AxiosResponse } from 'axios';
+import { AxiosResponse } from 'axios';
 import { QueryClient, useMutation, useQuery, useQueryClient } from 'react-query';
 
 import api from './apiConfig';

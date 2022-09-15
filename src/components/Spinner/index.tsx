@@ -8,6 +8,6 @@ function Spinner({ className }: { className?: string }) {
       <div className={styles.bounce3}></div>
     </div>
   );
-};
+}
 
 export default Spinner;

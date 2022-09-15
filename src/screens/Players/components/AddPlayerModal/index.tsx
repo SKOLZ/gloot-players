@@ -6,8 +6,6 @@ import toast from 'react-hot-toast';
 import { NAME_MAX_LENGTH, PlayerType, useAddPlayer } from '../../../../services/playersService';
 import { MAX_LENGTH_ERROR_MSG, REQUIRED_ERROR_MSG, UNKNOWN_ERROR_MSG } from '../../../../constants/strings';
 import { ReactComponent as CloseIcon } from '../../../../assets/close-icon.svg';
-import styles from './styles.module.scss';
-import useToggle from '../../../../hooks/useToggle';
 import Spinner from '../../../../components/Spinner';
 
 type AddPlayerModalProps = {
@@ -27,9 +25,7 @@ function AddPlayerModal({ isOpen, onCancel, onPlayerAdded }: AddPlayerModalProps
     onPlayerAdded();
   }
 
-  const onAddError = () => {
-    toast.error(UNKNOWN_ERROR_MSG);
-  }
+  const onAddError = () => toast.error(UNKNOWN_ERROR_MSG);
 
   const { mutate: addPlayer, isLoading: isAddingPlayer } = useAddPlayer(onAddSuccess, onAddError);
   
@@ -48,7 +44,6 @@ function AddPlayerModal({ isOpen, onCancel, onPlayerAdded }: AddPlayerModalProps
     reset
   } = useForm<PlayerType>();
 
-
   return (
     <Modal
       isOpen={isOpen}
@@ -58,16 +53,16 @@ function AddPlayerModal({ isOpen, onCancel, onPlayerAdded }: AddPlayerModalProps
       className="modal"
       overlayClassName="overlay"
     >
-      <h2 className="modal-title">Add Player</h2>
+      <h2 className="modal-title title-1">Add Player</h2>
       <button className="button modal-close" onClick={handleModalClose}>
-        <CloseIcon className="icon-2 close-icon" />
+        <CloseIcon className="close-icon" />
       </button>
       <form className="modal-body" onSubmit={handleSubmit(onSubmit)}>
         <div className="form-group">
-          <label className={styles.formLabel} htmlFor="name">Name</label>
+          <label className="form-label" htmlFor="name">Name</label>
           <input
             autoFocus
-            className={styles.formInput}
+            className="form-input"
             {
               ...register(
                 "name",
@@ -87,7 +82,7 @@ function AddPlayerModal({ isOpen, onCancel, onPlayerAdded }: AddPlayerModalProps
         </button>
       </form>
     </Modal>
-  )
-};
+  );
+}
 
 export default AddPlayerModal;
