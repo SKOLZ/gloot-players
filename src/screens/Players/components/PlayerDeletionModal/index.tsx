@@ -21,7 +21,7 @@ function PlayerDeletionModal({player, isOpen, onPlayerDeleted, onCancel}: Player
 
   const onDeletionConfirmed = () => {
     deletePlayer(player.id);
-  };
+  }
 
   return (
     <Modal
@@ -45,7 +45,7 @@ function PlayerDeletionModal({player, isOpen, onPlayerDeleted, onCancel}: Player
         </button>
       </div>
     </Modal>
-  )
-};
+  );
+}
 
 export default PlayerDeletionModal;
