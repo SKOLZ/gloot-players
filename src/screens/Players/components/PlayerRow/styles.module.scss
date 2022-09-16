@@ -7,9 +7,7 @@
   background-color: var(--secondary-color);
   margin: 1.5rem 0;
   opacity: 0;
-  animation-duration: 1s;
-  animation-fill-mode: forwards;
-  :global { animation-name: fadeIn; }
+  :global { animation: fadeIn 1s forwards; }
 }
 
 .player-name {

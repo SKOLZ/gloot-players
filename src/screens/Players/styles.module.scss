@@ -18,24 +18,20 @@
     height: 2px;
     width: 100%;
     background-color: var(--primary-color-2);
-    animation-duration: 0.5s;
-    animation-fill-mode: forwards;
-    :global { animation-name: fadeIn; }
+    :global { animation: fadeIn 0.5s forwards; }
   }
 }
 
 .title {
   font-size: 5rem;
   text-transform: uppercase;
-  animation-duration: 0.5s;
-  :global { animation-name: fadeInDown; }
+  :global { animation: fadeInDown 0.5s; }
 }
 
 .add-icon {
   width: 5rem;
   height: 5rem;
-  animation-duration: 0.5s;
-  :global { animation-name: fadeInDown; };
+  :global { animation: fadeInDown 0.5s; };
 }
 
 .list-spinner,

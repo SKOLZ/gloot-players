@@ -62,10 +62,10 @@ function PlayerRow({player, onDelete, animationDelay }: PlayerRowProps) {
               { errors.name && <p className="form-error">{errors.name.message}</p> }
             </div>
             <span className={styles.playerActions}>
-              <button disabled={isEditingPlayer} className="button" type="submit">
+              <button disabled={isEditingPlayer} className="button" type="submit" title="Confirm">
                 <ConfirmIcon className={styles.confirmIcon} />
               </button>
-              <button disabled={isEditingPlayer} className="button" type="button" onClick={cancelEdit}>
+              <button disabled={isEditingPlayer} className="button" type="button" onClick={cancelEdit} title="Cancel">
                 <CancelIcon className={styles.cancelIcon} />
               </button>
               { isEditingPlayer && <Spinner /> }
@@ -75,10 +75,10 @@ function PlayerRow({player, onDelete, animationDelay }: PlayerRowProps) {
           <>
             <p className={`title-1 ${styles.playerName}`}>{player.name}</p>
             <span className={styles.playerActions}>
-              <button className="button" onClick={toggleEditionMode}>
+              <button className="button" onClick={toggleEditionMode} title="Edit Player">
                 <EditIcon className={styles.editIcon} />
               </button>
-              <button className="button" onClick={() => { onDelete(player) }}>
+              <button className="button" onClick={() => { onDelete(player) }} title="Delete Player">
                 <DeleteIcon className={styles.deleteIcon} />
               </button>
             </span>

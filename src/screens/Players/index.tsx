@@ -26,7 +26,7 @@ function Players() {
     <main className={styles.main}>
       <div className={styles.sectionHeader}>
         <h1 className={`title-1 ${styles.title}`}>players</h1>
-        <button className={`${styles.addButton} button`} onClick={toggleAddPlayerModal}>
+        <button className={`${styles.addButton} button`} onClick={toggleAddPlayerModal} title="Add Player">
           <AddIcon className={styles.addIcon} />
         </button>
       </div>
@@ -51,16 +51,12 @@ function Players() {
         onCancel={toggleAddPlayerModal}
         onPlayerAdded={toggleAddPlayerModal}
       />
-      {
-        playerToDelete && (
-          <PlayerDeletionModal
-            isOpen={isOpenDeletePlayerModal}
-            onCancel={toggleDeletePlayerModal}
-            onPlayerDeleted={toggleDeletePlayerModal}
-            player={playerToDelete}
-          />
-        )
-      }
+      <PlayerDeletionModal
+        isOpen={isOpenDeletePlayerModal}
+        onCancel={toggleDeletePlayerModal}
+        onPlayerDeleted={toggleDeletePlayerModal}
+        player={playerToDelete}
+      />
     </main>
   );
 }

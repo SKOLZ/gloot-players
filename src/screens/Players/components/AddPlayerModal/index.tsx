@@ -47,7 +47,7 @@ function AddPlayerModal({ isOpen, onCancel, onPlayerAdded }: AddPlayerModalProps
   return (
     <Modal
       isOpen={isOpen}
-      closeTimeoutMS={1000}
+      shouldCloseOnOverlayClick={false}
       onRequestClose={handleModalClose}
       contentLabel="Add player modal"
       className="modal"

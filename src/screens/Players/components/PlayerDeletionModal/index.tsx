@@ -8,7 +8,7 @@ import styles from './styles.module.scss';
 import Spinner from '../../../../components/Spinner';
 
 type PlayerDeletionModalProps = {
-  player: PlayerType;
+  player: PlayerType | null;
   isOpen: boolean;
   onPlayerDeleted: () => void;
   onCancel: () => void;
@@ -20,13 +20,15 @@ function PlayerDeletionModal({player, isOpen, onPlayerDeleted, onCancel}: Player
   const { mutate: deletePlayer, isLoading: isDeletingPlayer } = useDeletePlayer(onPlayerDeleted, onDeleteError);
 
   const onDeletionConfirmed = () => {
-    deletePlayer(player.id);
+    if (player){
+      deletePlayer(player.id);
+    }
   }
 
   return (
     <Modal
-      closeTimeoutMS={1000}
       isOpen={isOpen}
+      shouldCloseOnOverlayClick={false}
       onRequestClose={onCancel}
       contentLabel="Delete player confirmation modal"
       className="modal"
@@ -38,7 +40,7 @@ function PlayerDeletionModal({player, isOpen, onPlayerDeleted, onCancel}: Player
       </button>
       <div className="modal-body">
         <p className={`text-1 ${styles.modalText}`}>
-          Are you sure you want to delete {player.name}?
+          Are you sure you want to delete {player?.name}?
         </p>
         <button className="text-button" disabled={isDeletingPlayer} onClick={onDeletionConfirmed}>
           { isDeletingPlayer ? <Spinner /> : "Delete" }
